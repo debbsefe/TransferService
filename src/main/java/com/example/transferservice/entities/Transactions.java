@@ -1,10 +1,9 @@
 package com.example.transferservice.entities;
 import org.hibernate.annotations.CreationTimestamp;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 public class Transactions {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

@@ -1,13 +1,16 @@
 package com.example.transferservice.entities;
+
 import javax.persistence.*;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 public class Balances {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private Integer balance;
-    @Column(name="accountNumber", unique = true)
+
+    @Column(name = "accountNumber", unique = true)
     private String accountNumber;
 
     public Balances(Integer balance, String accountNumber) {
@@ -15,12 +18,13 @@ public class Balances {
         this.accountNumber = accountNumber;
     }
 
-    public Balances(){
+    public Balances() {
     }
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -28,6 +32,7 @@ public class Balances {
     public Integer getBalance() {
         return balance;
     }
+
     public void setBalance(Integer balance) {
         this.balance = balance;
     }
