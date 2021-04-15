@@ -8,7 +8,7 @@ This is an api that allows you send money from one account to another.
 - Open project in your favorite ide and download dependencies.
 - Run `mvnw spring-boot:run` to start the project.
 
-Rest Endpoints
+## Rest Endpoints
 
 http://localhost:8080/account/transfer/ [POST]
 
