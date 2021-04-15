@@ -14,14 +14,14 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadUserData();
+        loadData();
     }
 
-    String generateAccountNumber(){
+    private String generateAccountNumber(){
         long number = (long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L;
         return Long.toString(number);
     }
-    private void loadUserData() {
+    private void loadData() {
         if (balanceRepository.count() == 0) {
 
             Balances balance1 = new Balances(10000, generateAccountNumber());

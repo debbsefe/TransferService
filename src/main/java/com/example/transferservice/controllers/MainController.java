@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping(path = "/account")
@@ -25,7 +26,10 @@ public class MainController {
     public @ResponseBody
     Object transferToAccount(@RequestParam String from, @RequestParam String to
             , @RequestParam Integer amount) {
-
+        boolean isNum = checkNumeric(amount.toString());
+        if(!isNum){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount has to be a number");
+        }
         if (from.equals(to)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "You cannot send money to your account");
         }
@@ -70,27 +74,34 @@ public class MainController {
 
 
     private void saveTransaction(Integer amount, String from) {
-        Transactions n = new Transactions();
+        Transactions transactions = new Transactions();
         Instant instant = Instant.now();
         long timeStampSeconds = instant.getEpochSecond();
         String reference = "transfer/" + timeStampSeconds + "/account";
-        n.setReference(reference);
-        n.setAmount(amount);
-        n.setAccountNumber(from);
-        transactionsRepository.save(n);
+        transactions.setReference(reference);
+        transactions.setAmount(amount);
+        transactions.setAccountNumber(from);
+        transactionsRepository.save(transactions);
     }
 
     private void saveFromBalance(Integer amount, String from) {
-        Balances n = getSingleBalance(from);
-        Integer availableBalance = n.getBalance();
-        n.setBalance(availableBalance - amount);
-        balanceRepository.save(n);
+        Balances balance = getSingleBalance(from);
+        Integer availableBalance = balance.getBalance();
+        balance.setBalance(availableBalance - amount);
+        balanceRepository.save(balance);
     }
 
     private void saveToBalance(Integer amount, String to) {
-        Balances n = getSingleBalance(to);
-        Integer availableBalance = n.getBalance();
-        n.setBalance(availableBalance + amount);
-        balanceRepository.save(n);
+        Balances balance = getSingleBalance(to);
+        Integer availableBalance = balance.getBalance();
+        balance.setBalance(availableBalance + amount);
+        balanceRepository.save(balance);
+    }
+
+    private static boolean checkNumeric(String value)
+    {
+        Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+        return pattern.matcher(value).matches();
     }
 }
